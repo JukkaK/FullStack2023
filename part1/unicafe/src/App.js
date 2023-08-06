@@ -12,18 +12,21 @@ const App = () => {
       <button onClick={() => {
         setGood(good + 1);
         setTotal(total + 1);
+        console.log('total', total)
       } } 
       > good
       </button>    
       <button onClick={() => {
         setNeutral(neutral + 1);
         setTotal(total + 1);
+        console.log('total', total)
       } } 
       > neutral
       </button>     
       <button onClick={() => {
         setBad(bad + 1);
         setTotal(total + 1);
+        console.log('total', total)
       } } 
       > bad
       </button>   
