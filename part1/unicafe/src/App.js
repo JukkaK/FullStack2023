@@ -18,8 +18,12 @@ if(props.total == 0){
 
 return(
   <div>
+    <table>
+      <tbody>
       <StatisticLine text="average" value={props.average} />
       <StatisticLine text="positive" value={props.positive} />
+      </tbody>
+    </table>
   </div>
 )
 
@@ -27,9 +31,7 @@ return(
 
 const StatisticLine = (props) => {
   return (
-    <div>
-      {props.text} {props.value}
-    </div>
+      <tr><td>{props.text}</td><td>{props.value}</td></tr>
   )
 }
 
