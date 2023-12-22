@@ -12,32 +12,37 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]     
 
-  const votes = Array.apply(null, new Array(8)).map(Number.prototype.valueOf,0);
+  // Initialize votes state
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
 
   const [selected, setSelected] = useState(0)
 
-  const [rnd, setRnd] = useState(0);
-
   const handleAddVote = (voted) => {
-    const votes2 = {...votes}
-    console.log('Im gonna vote for', voted)
-    votes2[voted] +=1
-  
-    // this.setState({
-    //   votes: votes2,
-    // });
-  };
+    // Create a copy of the votes array
+    const newVotes = [...votes]
+    // Increment the vote count for the selected anecdote
+    newVotes[voted] += 1
+    // Update the votes state
+    setVotes(newVotes)
+  }
+
+  const getMostVoted = () => {
+    return votes.indexOf(Math.max(...votes))
+  }
 
   return (
     <div>
-      <p>{anecdotes[rnd]}</p>
-      <p>{votes[rnd]}</p>
-      <button onClick={() => handleAddVote(rnd)}>
+      <p>{anecdotes[selected]}</p>
+      <p>{votes[selected]}</p>
+      <button onClick={() => handleAddVote(selected)}>
         vote
       </button>      
-      <button onClick={() => setRnd(Math.floor(Math.random() * 8))}>
+      <button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}>
         next anecdote
       </button>
+      <h2>Anecdote with most votes</h2>
+      <p>{anecdotes[getMostVoted()]}</p>
+      <p>has {votes[getMostVoted()]} votes</p>
     </div>
   )
 }
