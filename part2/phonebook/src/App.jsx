@@ -21,8 +21,16 @@ const App = () => {
   }, [])
   console.log('render', persons.length, 'persons')
 
-  // const promise2 = axios.get('http://localhost:3001/foobar')
-  // console.log(promise2)
+  const deletePerson = (id) => {
+    const person = persons.find(p => p.id === id);
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter(person => person.id !== id));
+      });
+    }
+  }
 
   const addName = (event) => {
     event.preventDefault()
@@ -40,32 +48,7 @@ const App = () => {
         setNewNumber('')
       })
 
-    // axios
-    //   .post('http://localhost:3001/persons', personNameObject)
-    //   .then(response => {
-    //     setPersons(persons.concat(response.data))
-    //     setNewName('')
-    //     setNewNumber('')
-    //   })
     }
-
-  // const addName2 = (event) => {
-  //   event.preventDefault()
-  //   const nameObject = {
-  //     id: persons.length + 1,
-  //     name: newName,
-  //     number: newNumber            
-  //   }
-  //   console.log(JSON.stringify(nameObject.name))
-  //   if (persons.some(person => person.name === newName)) {      
-  //     alert(`${newName} already added.`)
-  //   } else {
-  //     setPersons(persons.concat(nameObject))
-  //     setNewName('')
-  //     setNewNumber('')
-  //   }
-
-  //}
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
@@ -83,6 +66,15 @@ const App = () => {
 
   const namesToShow = persons.filter(person => person.name.toLowerCase().includes(nameFilter.toLowerCase()));
 
+  const Persons = ({ person, deletePerson }) => {
+    return (
+      <li>
+        {person.name} {person.number}
+        <button onClick={() => deletePerson(person.id)}>Delete</button>
+      </li>
+    )
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -98,9 +90,9 @@ const App = () => {
       <h2>Numbers</h2>      
       <ul>
         {namesToShow.map(person =>
-          <Persons key={person.id} person={person} />
+          <Persons key={person.id} person={person} deletePerson={deletePerson} />
         )}
-      </ul>      
+      </ul>       
     </div>
   )
 }
