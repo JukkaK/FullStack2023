@@ -1,18 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonsForm from './components/PersonsForm'
+import axios from 'axios'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ]) 
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setNameFilter] = useState('');
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then (response => {
+          console.log('promise fulfilled')
+          setPersons(response.data)
+      })
+  }, [])
+  console.log('render', persons.length, 'persons')
+
+  // const promise2 = axios.get('http://localhost:3001/foobar')
+  // console.log(promise2)
 
   const addName = (event) => {
     event.preventDefault()
@@ -22,7 +32,6 @@ const App = () => {
       number: newNumber            
     }
     console.log(JSON.stringify(nameObject.name))
-    //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
     if (persons.some(person => person.name === newName)) {      
       alert(`${newName} already added.`)
     } else {
