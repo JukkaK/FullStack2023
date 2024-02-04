@@ -66,14 +66,14 @@ const App = () => {
 
   const namesToShow = persons.filter(person => person.name.toLowerCase().includes(nameFilter.toLowerCase()));
 
-  const Persons = ({ person, deletePerson }) => {
-    return (
-      <li>
-        {person.name} {person.number}
-        <button onClick={() => deletePerson(person.id)}>Delete</button>
-      </li>
-    )
-  }
+  // const Persons = ({ person, deletePerson }) => {
+  //   return (
+  //     <li>
+  //       {person.name} {person.number}
+  //       <button onClick={() => deletePerson(person.id)}>Delete</button>
+  //     </li>
+  //   )
+  // }
 
   return (
     <div>
