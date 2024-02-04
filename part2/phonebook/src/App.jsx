@@ -26,21 +26,38 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    const nameObject = {
+    const personNameObject = {
       id: persons.length + 1,
       name: newName,
-      number: newNumber            
-    }
-    console.log(JSON.stringify(nameObject.name))
-    if (persons.some(person => person.name === newName)) {      
-      alert(`${newName} already added.`)
-    } else {
-      setPersons(persons.concat(nameObject))
-      setNewName('')
-      setNewNumber('')
+      number: newNumber
     }
 
-  }
+    axios
+      .post('http://localhost:3001/persons', personNameObject)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNumber('')
+      })
+    }
+
+  // const addName2 = (event) => {
+  //   event.preventDefault()
+  //   const nameObject = {
+  //     id: persons.length + 1,
+  //     name: newName,
+  //     number: newNumber            
+  //   }
+  //   console.log(JSON.stringify(nameObject.name))
+  //   if (persons.some(person => person.name === newName)) {      
+  //     alert(`${newName} already added.`)
+  //   } else {
+  //     setPersons(persons.concat(nameObject))
+  //     setNewName('')
+  //     setNewNumber('')
+  //   }
+
+  //}
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
