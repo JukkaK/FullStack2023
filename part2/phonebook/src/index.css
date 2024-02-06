@@ -76,3 +76,20 @@ button:focus-visible {
   padding: 10px;
   margin-bottom: 10px;
 }
+
+.notification {
+  color: green;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  animation: fadeout 5s forwards;
+  animation-delay: 5s;
+}
+
+@keyframes fadeout {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}

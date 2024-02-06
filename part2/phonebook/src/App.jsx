@@ -11,7 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setNameFilter] = useState('');
-  const [errorMessage, setErrorMessage] = useState('some error happened...')
+  const [updateMessage, setUpdateMessage] = useState('something was updated...')
 
   useEffect(() => {
     console.log('effect')
@@ -32,24 +32,48 @@ const App = () => {
         setPersons(persons.filter(person => person.id !== id));
       });
     }
+    setUpdateMessage(`Deleted ${person.name}`)
+
+    setTimeout(() => {
+      setNotification(null);
+    }, 2000);
   }
 
   const addName = (event) => {
-    event.preventDefault()
+    event.preventDefault()    
     const personNameObject = {
-      id: persons.length + 1,
+      id: persons.length > 0 ? persons[persons.length - 1].id + 1 : 1,
       name: newName,
       number: newNumber
     }
 
-    personService
-      .create(personNameObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
-      })
+    const existingPerson = persons.find(p => p.name === newName);
 
+      if (existingPerson) {
+        if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+          personService
+            .update(existingPerson.id, personNameObject)
+            .then(returnedPerson => {
+              setPersons(persons.map(person => person.id !== existingPerson.id ? person : returnedPerson));
+            });
+        }
+      } else {
+        personService
+          .create(personNameObject)
+          .then(returnedPerson => {
+            setPersons(persons.concat(returnedPerson))
+            setNewName('')
+            setNewNumber('')
+          })
+        setUpdateMessage(`Added ${newName}`)
+      }
+
+    setTimeout(() => {
+      setNotification(null);
+    }, 2000);
+
+    setNewName('');
+    setNewNumber('');
     }
 
   const handleNameChange = (event) => {
@@ -74,27 +98,19 @@ const App = () => {
     }
   
     return (
-      <div className='error'>
+      <div className='notification'>
         {message}
       </div>
     )
-  }
 
-  // const Persons = ({ person, deletePerson }) => {
-  //   return (
-  //     <li>
-  //       {person.name} {person.number}
-  //       <button onClick={() => deletePerson(person.id)}>Delete</button>
-  //     </li>
-  //   )
-  // }
+  }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
+      <Notification message={updateMessage} />
       <Filter value={nameFilter} onChange={handleNameFilterChange} />
-      <div>debug: {nameFilter}</div>
+      
       <PersonsForm 
         onSubmit={addName} 
         name={newName} 
