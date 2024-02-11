@@ -23,6 +23,10 @@ const App = () => {
   }, [])
   console.log('render', persons.length, 'persons')
 
+const setNotification = (message) => {
+  setUpdateMessage(message);
+}
+
   const deletePerson = (id) => {
     const person = persons.find(p => p.id === id);
     if (window.confirm(`Delete ${person.name}?`)) {
