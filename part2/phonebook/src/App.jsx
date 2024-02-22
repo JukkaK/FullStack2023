@@ -59,6 +59,11 @@ const setNotification = (message) => {
             .update(existingPerson.id, personNameObject)
             .then(returnedPerson => {
               setPersons(persons.map(person => person.id !== existingPerson.id ? person : returnedPerson));
+            })
+            .catch(error => {
+              alert(
+                `the person '${existingPerson.name}' was already deleted from server`
+              );
             });
         }
       } else {
