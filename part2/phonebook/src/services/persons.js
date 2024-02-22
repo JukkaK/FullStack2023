@@ -7,14 +7,6 @@ const getAll = () => {
     return request.then(response => response.data)
 }
 
-// const getAll = () => {
-//     const request = axios.get(baseUrl)
-//     .then(response => response.data)
-//     .catch(error => {
-//         console.log('error', error)
-//     })
-//     return request.then(response => response.data)
-// }
 const create = newObject => {
     const request = axios.post(baseUrl, newObject)
     return request.then(response => response.data)
